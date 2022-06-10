@@ -24,10 +24,20 @@ namespace saturn2
 
         private void FirstStart_Load(object sender, EventArgs e)
         {
-            foreach(string dir in Directory.GetDirectories(Path.Combine(Program.path, "servers")))
+            RefreshServerList();
+        }
+
+        private void RefreshServerList()
+        {
+            foreach(Control c in flowLayoutPanel1.Controls)
+            {
+                c.Dispose();
+            }
+
+            foreach (string dir in Directory.GetDirectories(Path.Combine(Program.path, "servers")))
             {
                 Button b = new Button();
-                b.Width = flowLayoutPanel1.Width;
+                b.Width = flowLayoutPanel1.Width - 6;
                 b.Click += B_Click;
                 b.Text = dir.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries).Last();
                 b.Parent = flowLayoutPanel1;
@@ -42,7 +52,10 @@ namespace saturn2
 
         private void button1_Click(object sender, EventArgs e)
         {
-
+            ServerSetup ss = new ServerSetup();
+            ss.serverName = textBox1.Text;
+            ss.ShowDialog();
+            RefreshServerList();
         }
     }
 }
