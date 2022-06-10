@@ -52,6 +52,10 @@ namespace saturn2
                 label1.Text = "downloading server.jar...";
                 new Thread(DownloadJar).Start();
             }
+            else
+            {
+                Close();
+            }
         }
 
         void DownloadJar()

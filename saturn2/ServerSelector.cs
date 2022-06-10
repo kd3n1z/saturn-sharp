@@ -29,10 +29,7 @@ namespace saturn2
 
         private void RefreshServerList()
         {
-            foreach(Control c in flowLayoutPanel1.Controls)
-            {
-                c.Dispose();
-            }
+            flowLayoutPanel1.Controls.Clear();
 
             foreach (string dir in Directory.GetDirectories(Path.Combine(Program.path, "servers")))
             {
