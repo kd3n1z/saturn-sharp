@@ -77,6 +77,9 @@
     <EmbeddedResource Include="FirstStart.resx">
       <DependentUpon>FirstStart.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="ServerSelector.resx">
       <DependentUpon>ServerSelector.cs</DependentUpon>
     </EmbeddedResource>

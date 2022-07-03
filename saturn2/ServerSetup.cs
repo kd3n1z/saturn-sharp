@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -50,23 +51,24 @@ namespace saturn2
             if (!File.Exists(Path.Combine(Program.path, "server-jars", comboBox1.Text + ".jar")))
             {
                 label1.Text = "downloading server.jar...";
-                new Thread(DownloadJar).Start();
+                DownloadJar(comboBox1.Text);
             }
-            else
-            {
-                Close();
-            }
+
+            label1.Text = "first start...";
+            Process p = new Process();
+            p.StartInfo.FileName = sf["java"];
+            p.StartInfo.Arguments = "-Xmx1024M -Xms1024M -jar " + Path.Combine(Program.path, "server-jars", sf["core"]) + " nogui";
+            p.StartInfo.WorkingDirectory = serverDir;
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+            p.WaitForExit();
+            File.WriteAllText(Path.Combine(serverDir, "eula.txt"), "eula=true");
+            Close();
         }
 
-        void DownloadJar()
+        void DownloadJar(string ver)
         {
-            string ver = "";
-
-            comboBox1.Invoke(new MethodInvoker(() =>
-            {
-                ver = comboBox1.Text;
-            }));
-
             new WebClient().DownloadFile(GetJarUrl(ver), Path.Combine(Program.path, "server-jars", ver + ".jar"));
             Invoke(new MethodInvoker(() =>
             {

@@ -12,9 +12,16 @@ namespace saturn2
 {
     public partial class MainForm : Form
     {
+        public string server = "";
+
         public MainForm()
         {
             InitializeComponent();
+        }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            label1.Text += server;
         }
     }
 }
