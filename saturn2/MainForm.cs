@@ -31,22 +31,26 @@ namespace saturn2
 
             sf = new SettingsFile(File.ReadAllText(Path.Combine(serverPath, "saturn-config.txt")));
 
-            foreach (string line in File.ReadAllText(Path.Combine(serverPath, "server.properties")).Replace("\r", "").Split('\n'))
+            try
             {
-                if (line.StartsWith("#") || string.IsNullOrWhiteSpace(line))
+                foreach (string line in File.ReadAllText(Path.Combine(serverPath, "server.properties")).Replace("\r", "").Split('\n'))
                 {
-                    continue;
+                    if (line.StartsWith("#") || string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+
+                    string propName = line.Split('=')[0];
+                    string propVal = line.Remove(0, propName.Length + 1);
+
+                    TextBox tb = new TextBox();
+                    tb.Tag = propName;
+                    tb.Text = propVal;
+                    tb.Parent = propsPanel;
+                    tb.MouseEnter += Tb_MouseEnter;
                 }
-
-                string propName = line.Split('=')[0];
-                string propVal = line.Remove(0, propName.Length + 1);
-
-                TextBox tb = new TextBox();
-                tb.Tag = propName;
-                tb.Text = propVal;
-                tb.Parent = propsPanel;
-                tb.MouseEnter += Tb_MouseEnter;
             }
+            catch { }
         }
 
         private void Tb_MouseEnter(object sender, EventArgs e)

@@ -60,7 +60,7 @@ namespace saturn2
             }
 
             ServerSelector selector = new ServerSelector();
-            if (selector.ShowDialog() == DialogResult.OK)
+            while (selector.ShowDialog() == DialogResult.OK)
             {
                 MainForm mf = new MainForm();
                 mf.server = selector.server;
