@@ -50,6 +50,15 @@ namespace saturn2
                 MessageBox.Show("unable to fetch versions from https://mcversions.net/", "saturn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
+            foreach(string java in Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Java")).Concat(Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles).Replace(" (x86)", ""), "Java"))))
+            {
+                string javabin = Path.Combine(java, "bin", "java.exe");
+                if (File.Exists(javabin))
+                {
+                    javas.Add(javabin);
+                }
+            }
+
             ServerSelector selector = new ServerSelector();
             if (selector.ShowDialog() == DialogResult.OK)
             {

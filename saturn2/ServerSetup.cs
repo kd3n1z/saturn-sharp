@@ -28,9 +28,14 @@ namespace saturn2
             label1.Text = serverName + " setup";
             foreach(string ver in Program.versions)
             {
-                comboBox1.Items.Add(ver);
+                jarVer.Items.Add(ver);
             }
-            comboBox1.Text = comboBox1.Items[0].ToString();
+            foreach(string path in Program.javas)
+            {
+                javaPath.Items.Add(path);
+            }
+            jarVer.Text = jarVer.Items[0].ToString();
+            javaPath.Text = javaPath.Items[0].ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -41,17 +46,17 @@ namespace saturn2
 
             SettingsFile sf = new SettingsFile();
 
-            sf["core"] = comboBox1.Text + ".jar";
+            sf["core"] = jarVer.Text + ".jar";
             sf["startArgs"] = "-Xmx%memM -Xms%memM -jar %core nogui";
             sf["mem"] = "1024";
-            sf["java"] = "java";
+            sf["java"] = javaPath.Text;
 
             File.WriteAllText(Path.Combine(serverDir, "saturn-config.txt"), sf.ToString());
 
-            if (!File.Exists(Path.Combine(Program.path, "server-jars", comboBox1.Text + ".jar")))
+            if (!File.Exists(Path.Combine(Program.path, "server-jars", jarVer.Text + ".jar")))
             {
                 label1.Text = "downloading server.jar...";
-                DownloadJar(comboBox1.Text);
+                DownloadJar(jarVer.Text);
             }
 
             label1.Text = "first start...";

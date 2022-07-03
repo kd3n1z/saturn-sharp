@@ -29,8 +29,9 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.jarVer = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
+            this.javaPath = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -46,14 +47,14 @@
             this.label1.Text = "serverName setup";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // comboBox1
+            // jarVer
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 66);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(327, 21);
-            this.comboBox1.TabIndex = 4;
+            this.jarVer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.jarVer.FormattingEnabled = true;
+            this.jarVer.Location = new System.Drawing.Point(12, 66);
+            this.jarVer.Name = "jarVer";
+            this.jarVer.Size = new System.Drawing.Size(327, 21);
+            this.jarVer.TabIndex = 4;
             // 
             // button1
             // 
@@ -66,13 +67,23 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // javaPath
+            // 
+            this.javaPath.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.javaPath.FormattingEnabled = true;
+            this.javaPath.Location = new System.Drawing.Point(12, 93);
+            this.javaPath.Name = "javaPath";
+            this.javaPath.Size = new System.Drawing.Size(327, 21);
+            this.javaPath.TabIndex = 6;
+            // 
             // ServerSetup
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(351, 275);
+            this.Controls.Add(this.javaPath);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.jarVer);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Name = "ServerSetup";
@@ -86,7 +97,8 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox jarVer;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ComboBox javaPath;
     }
 }

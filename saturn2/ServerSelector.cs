@@ -25,6 +25,13 @@ namespace saturn2
         private void FirstStart_Load(object sender, EventArgs e)
         {
             RefreshServerList();
+
+            int i = 1;
+            while(Directory.Exists(Path.Combine(Program.path, "servers", textBox1.Text)))
+            {
+                textBox1.Text = "serverName" + i;
+                i++;
+            }
         }
 
         private void RefreshServerList()
