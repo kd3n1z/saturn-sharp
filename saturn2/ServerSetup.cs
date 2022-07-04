@@ -49,7 +49,11 @@ namespace saturn2
             sf["core"] = jarVer.Text + ".jar";
             sf["startArgs"] = "-Xmx%memM -Xms%memM -jar %core nogui";
             sf["mem"] = "1024";
-            sf["java"] = javaPath.Text;
+
+            string javabin = javaPath.Text.Remove(0, javaPath.Text.IndexOf("(") + 1);
+            javabin = javabin.Remove(javabin.Length - 1, 1);
+
+            sf["java"] = javabin;
 
             File.WriteAllText(Path.Combine(serverDir, "saturn-config.txt"), sf.ToString());
 
@@ -68,6 +72,12 @@ namespace saturn2
             p.StartInfo.CreateNoWindow = true;
             p.Start();
             p.WaitForExit();
+
+            if(p.ExitCode == 1)
+            {
+                MessageBox.Show("Java exited with code 1. It looks like you're using incorrect Java version for this server version (for example, server v1.19 requires Java v17.0)", "saturn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+
             File.WriteAllText(Path.Combine(serverDir, "eula.txt"), "eula=true");
             Close();
         }

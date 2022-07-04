@@ -25,13 +25,6 @@ namespace saturn2
         private void FirstStart_Load(object sender, EventArgs e)
         {
             RefreshServerList();
-
-            int i = 1;
-            while(Directory.Exists(Path.Combine(Program.path, "servers", textBox1.Text)))
-            {
-                textBox1.Text = "serverName" + i;
-                i++;
-            }
         }
 
         private void RefreshServerList()
@@ -45,6 +38,14 @@ namespace saturn2
                 b.Click += B_Click;
                 b.Text = dir.Split(new string[] { "/", "\\" }, StringSplitOptions.RemoveEmptyEntries).Last();
                 b.Parent = flowLayoutPanel1;
+            }
+
+
+            int i = 1;
+            while (Directory.Exists(Path.Combine(Program.path, "servers", textBox1.Text)))
+            {
+                textBox1.Text = "serverName" + i;
+                i++;
             }
         }
 

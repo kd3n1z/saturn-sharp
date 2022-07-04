@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -10,7 +11,7 @@ namespace saturn2
 {
     internal static class Program
     {
-        public static int build = 1;
+        public static int build = 0; // BETA
 
         public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "saturn");
         public static List<string> versions = new List<string>();
@@ -55,7 +56,21 @@ namespace saturn2
                 string javabin = Path.Combine(java, "bin", "java.exe");
                 if (File.Exists(javabin))
                 {
-                    javas.Add(javabin);
+                    string ver = "unknown";
+                    try
+                    {
+                        Process p = new Process();
+                        p.StartInfo.FileName = javabin;
+                        p.StartInfo.Arguments = "-version";
+                        p.StartInfo.RedirectStandardError = true;
+                        p.StartInfo.CreateNoWindow = true;
+                        p.StartInfo.UseShellExecute = false;
+                        p.Start();
+                        p.WaitForExit();
+                        ver = "Java v" + p.StandardError.ReadLine().Split('"')[1];
+                    }
+                    catch { }
+                    javas.Add(ver + " (" + javabin + ")");
                 }
             }
 
