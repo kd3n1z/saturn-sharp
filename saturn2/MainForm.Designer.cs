@@ -33,6 +33,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.hideButton = new System.Windows.Forms.Button();
             this.closeButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
@@ -59,7 +60,7 @@
             // 
             // button3
             // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(49)))), ((int)(((byte)(111)))));
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(39)))), ((int)(((byte)(101)))));
             this.button3.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.button3.FlatAppearance.BorderSize = 0;
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -74,7 +75,7 @@
             // 
             // button2
             // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(49)))), ((int)(((byte)(111)))));
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(39)))), ((int)(((byte)(101)))));
             this.button2.Dock = System.Windows.Forms.DockStyle.Top;
             this.button2.FlatAppearance.BorderSize = 0;
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -89,7 +90,7 @@
             // 
             // button1
             // 
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(49)))), ((int)(((byte)(111)))));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(48)))), ((int)(((byte)(39)))), ((int)(((byte)(101)))));
             this.button1.Dock = System.Windows.Forms.DockStyle.Top;
             this.button1.FlatAppearance.BorderSize = 0;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
@@ -105,17 +106,33 @@
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.panel2.Controls.Add(this.hideButton);
             this.panel2.Controls.Add(this.closeButton);
             this.panel2.Controls.Add(this.label2);
             this.panel2.Controls.Add(this.label1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel2.Location = new System.Drawing.Point(0, 0);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(673, 58);
+            this.panel2.Size = new System.Drawing.Size(701, 58);
             this.panel2.TabIndex = 1;
             this.panel2.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseDown);
             this.panel2.MouseMove += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseMove);
             this.panel2.MouseUp += new System.Windows.Forms.MouseEventHandler(this.panel2_MouseUp);
+            // 
+            // hideButton
+            // 
+            this.hideButton.Dock = System.Windows.Forms.DockStyle.Right;
+            this.hideButton.FlatAppearance.BorderSize = 0;
+            this.hideButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.hideButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.hideButton.ForeColor = System.Drawing.Color.White;
+            this.hideButton.Location = new System.Drawing.Point(585, 0);
+            this.hideButton.Name = "hideButton";
+            this.hideButton.Size = new System.Drawing.Size(58, 58);
+            this.hideButton.TabIndex = 3;
+            this.hideButton.Text = "-";
+            this.hideButton.UseVisualStyleBackColor = true;
+            this.hideButton.Click += new System.EventHandler(this.hideButton_Click);
             // 
             // closeButton
             // 
@@ -125,7 +142,7 @@
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.closeButton.ForeColor = System.Drawing.Color.White;
-            this.closeButton.Location = new System.Drawing.Point(615, 0);
+            this.closeButton.Location = new System.Drawing.Point(643, 0);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(58, 58);
             this.closeButton.TabIndex = 2;
@@ -157,8 +174,10 @@
             // 
             // propsPanel
             // 
+            this.propsPanel.AutoScroll = true;
             this.propsPanel.Location = new System.Drawing.Point(438, 94);
             this.propsPanel.Name = "propsPanel";
+            this.propsPanel.Padding = new System.Windows.Forms.Padding(5);
             this.propsPanel.Size = new System.Drawing.Size(184, 133);
             this.propsPanel.TabIndex = 2;
             // 
@@ -173,9 +192,11 @@
             // 
             // richTextBox1
             // 
+            this.richTextBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(16)))), ((int)(((byte)(16)))), ((int)(((byte)(16)))));
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.richTextBox1.ForeColor = System.Drawing.SystemColors.Window;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.ReadOnly = true;
@@ -185,10 +206,11 @@
             // 
             // textBox1
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.ScrollBar;
+            this.textBox1.BackColor = System.Drawing.Color.Black;
             this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.textBox1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.textBox1.Font = new System.Drawing.Font("Consolas", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.textBox1.ForeColor = System.Drawing.Color.White;
             this.textBox1.Location = new System.Drawing.Point(0, 77);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(200, 23);
@@ -200,8 +222,8 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(673, 375);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(58)))), ((int)(((byte)(49)))), ((int)(((byte)(111)))));
+            this.ClientSize = new System.Drawing.Size(701, 375);
             this.Controls.Add(this.consolePanel);
             this.Controls.Add(this.propsPanel);
             this.Controls.Add(this.panel1);
@@ -235,5 +257,6 @@
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.RichTextBox richTextBox1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.Button hideButton;
     }
 }
