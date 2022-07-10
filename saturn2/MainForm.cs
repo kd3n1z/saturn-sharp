@@ -31,7 +31,7 @@ namespace saturn2
         private void MainForm_Load(object sender, EventArgs e)
         {
             serverPath = Path.Combine(Program.path, "servers", server);
-            label1.Text += server;
+            label1.Text = label1.Text.Replace("%server", server).Replace("%build", Program.build.ToString());
 
             sf = new SettingsFile(File.ReadAllText(Path.Combine(serverPath, "saturn-config.txt")));
 
