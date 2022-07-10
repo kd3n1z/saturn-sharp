@@ -115,8 +115,6 @@ namespace saturn2
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            // TODO KILL JAVA & NGROK
-
             try
             {
                 javaProcess.Kill();
@@ -285,7 +283,12 @@ namespace saturn2
         {
             if(e.KeyCode == Keys.Enter)
             {
-                // TODO SEND COMMAND
+                try
+                {
+                    javaProcess.StandardInput.WriteLine(textBox1.Text);
+                    textBox1.Text = "";
+                }
+                catch { }
             }
         }
 
