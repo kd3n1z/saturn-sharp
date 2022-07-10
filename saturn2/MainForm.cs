@@ -14,7 +14,8 @@ namespace saturn2
 {
     public partial class MainForm : Form
     {
-        Process p = null;
+        Process ngrokProcess = new Process();
+        Process javaProcess = new Process();
 
         public string server = "";
 
@@ -33,6 +34,28 @@ namespace saturn2
             label1.Text += server;
 
             sf = new SettingsFile(File.ReadAllText(Path.Combine(serverPath, "saturn-config.txt")));
+
+            foreach (string java in Program.javas)
+            {
+                string path = java.Remove(0, java.IndexOf("(") + 1);
+                path = path.Remove(path.Length - 1, 1);
+                comboBox1.Items.Add(path);
+            }
+
+            foreach (string jar in Directory.GetFiles(Path.Combine(Program.path, "server-jars")))
+            {
+                comboBox2.Items.Add(Path.GetFileName(jar));
+            }
+
+            comboBox1.Text = sf["java"];
+            comboBox2.Text = sf["core"];
+            textBox2.Text = sf["startArgs"];
+            textBox3.Text = sf["ngrokToken"];
+            textBox4.Text = sf["ngrokArgs"];
+            checkBox1.Checked = sf["ngrokEnabled"] == "true";
+            trackBar1.Value = int.Parse(sf["mem"]);
+
+            trackBar1_Scroll(this, new EventArgs());
 
             try
             {
@@ -76,6 +99,7 @@ namespace saturn2
 
             propsPanel.Dock = DockStyle.Fill;
             consolePanel.Dock = DockStyle.Fill;
+            optionsPanel.Dock = DockStyle.Fill;
             consolePanel.Visible = false;
         }
 
@@ -91,10 +115,20 @@ namespace saturn2
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (p != null && !p.HasExited)
+            // TODO KILL JAVA & NGROK
+
+            try
             {
-                p.Kill();
+                javaProcess.Kill();
             }
+            catch { }
+
+            try
+            {
+                ngrokProcess.Kill();
+            }
+            catch { }
+
             SaveProps();
         }
 
@@ -106,7 +140,8 @@ namespace saturn2
                 if(c is TextBox)
                 {
                     props += "\n" + c.Tag.ToString() + "=" + c.Text;
-                }else if(c is CheckBox)
+                }
+                else if(c is CheckBox)
                 {
                     props += "\n" + c.Text.ToString() + "=" + ((CheckBox)c).Checked.ToString().ToLower();
                 }
@@ -115,12 +150,16 @@ namespace saturn2
             label2.Text = "server.props saved!";
 
             File.WriteAllText(Path.Combine(serverPath, "server.properties"), props);
+
+            File.WriteAllText(Path.Combine(serverPath, "saturn-config.txt"), sf.ToString());
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             propsPanel.Visible = true;
             consolePanel.Visible = false;
+            optionsPanel.Visible = false;
+
         }
 
         bool mouseDown;
@@ -155,45 +194,74 @@ namespace saturn2
 
         private void button2_Click(object sender, EventArgs e)
         {
-            SaveProps();
-
             propsPanel.Visible = false;
             consolePanel.Visible = true;
+            optionsPanel.Visible = false;
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
             SaveProps();
-            if (p == null)
+
+            string port = "25565";
+
+            foreach(Control c in propsPanel.Controls)
             {
-                p = new Process();
-                p.StartInfo.FileName = sf["java"];
-                p.StartInfo.Arguments = sf["startArgs"].Replace("%mem", sf["mem"]).Replace("%core", "\"" + Path.Combine(Program.path, "server-jars", sf["core"]) + "\"");
-                p.StartInfo.WorkingDirectory = serverPath;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.RedirectStandardError = true;
-                p.StartInfo.RedirectStandardInput = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.ErrorDataReceived += P_DataReceived;
-                p.OutputDataReceived += P_DataReceived;
-                p.Exited += P_Exited;
-                p.Start();
-                p.BeginErrorReadLine();
-                p.BeginOutputReadLine();
+                if (c is TextBox)
+                {
+                    TextBox tb = (TextBox)c;
+                    if (tb.Tag.ToString() == "server-port" || tb.Tag.ToString() == "port")
+                    {
+                        port = tb.Text;
+                    }
+                }
             }
 
-        }
+            javaProcess.StartInfo.FileName = sf["java"];
+            javaProcess.StartInfo.Arguments = sf["startArgs"].Replace("%mem", sf["mem"]).Replace("%core", Path.Combine(Program.path, "server-jars", sf["core"]));
+            javaProcess.StartInfo.WorkingDirectory = serverPath;
+            javaProcess.StartInfo.CreateNoWindow = true;
+            javaProcess.StartInfo.UseShellExecute = false;
+            javaProcess.OutputDataReceived += JavaProcess_OutputDataReceived;
+            javaProcess.ErrorDataReceived += JavaProcess_OutputDataReceived;
+            javaProcess.StartInfo.RedirectStandardOutput = true;
+            javaProcess.StartInfo.RedirectStandardError = true;
+            javaProcess.StartInfo.RedirectStandardInput = true;
+            javaProcess.Start();
+            javaProcess.BeginOutputReadLine();
+            javaProcess.BeginErrorReadLine();
 
-        private void P_Exited(object sender, EventArgs e)
-        {
-            richTextBox1.Invoke(new MethodInvoker(() =>
+            button3.Enabled = false;
+
+            Task.Factory.StartNew(() =>
             {
-                richTextBox1.AppendText("[saturn] java exited\n");
-            }));
+                javaProcess.WaitForExit();
+                button3.Invoke(new MethodInvoker(() =>
+                {
+                    button3.Enabled = true;
+                }));
+            });
+
+            if (sf["ngrokEnabled"] == "true")
+            {
+                try
+                {
+                    ngrokProcess.Kill();
+                }
+                catch { }
+
+                ngrokProcess.StartInfo.FileName = Program.ngrokPath;
+                ngrokProcess.StartInfo.Arguments = sf["ngrokArgs"].Replace("%token", sf["ngrokToken"]).Replace("%port", port);
+                ngrokProcess.StartInfo.CreateNoWindow = true;
+                ngrokProcess.StartInfo.UseShellExecute = false;
+                ngrokProcess.OutputDataReceived += NgrokProcess_OutputDataReceived;
+                ngrokProcess.StartInfo.RedirectStandardOutput = true;
+                ngrokProcess.Start();
+                ngrokProcess.BeginOutputReadLine();
+            }
         }
 
-        private void P_DataReceived(object sender, DataReceivedEventArgs e)
+        private void JavaProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
         {
             richTextBox1.Invoke(new MethodInvoker(() =>
             {
@@ -201,21 +269,83 @@ namespace saturn2
             }));
         }
 
+        private void NgrokProcess_OutputDataReceived(object sender, DataReceivedEventArgs e)
+        {
+            richTextBox1.Invoke(new MethodInvoker(() =>
+            {
+                richTextBox1.AppendText(e.Data + "\n");
+                if (e.Data.Contains("url=tcp://"))
+                {
+                    label2.Text = e.Data.Remove(0, e.Data.IndexOf("url=tcp://") + "url=tcp://".Length);
+                }
+            }));
+        }
+
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.KeyCode == Keys.Enter)
             {
-                if (p != null)
-                {
-                    p.StandardInput.WriteLine(textBox1.Text);
-                    textBox1.Text = "";
-                }
+                // TODO SEND COMMAND
             }
         }
 
         private void hideButton_Click(object sender, EventArgs e)
         {
             WindowState = FormWindowState.Minimized;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void trackBar1_Scroll(object sender, EventArgs e)
+        {
+            label6.Text = trackBar1.Value.ToString() + " Megabytes";
+
+            sf["mem"] = trackBar1.Value.ToString();
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sf["core"] = comboBox2.Text;
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            sf["java"] = comboBox1.Text;
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            sf["startArgs"] = textBox2.Text;
+        }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+            sf["ngrokToken"] = textBox3.Text;
+        }
+
+        private void textBox4_TextChanged(object sender, EventArgs e)
+        {
+            sf["ngrokArgs"] = textBox4.Text;
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            sf["ngrokEnabled"] = checkBox1.Checked.ToString().ToLower();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            propsPanel.Visible = false;
+            consolePanel.Visible = false;
+            optionsPanel.Visible = true;
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(label2.Text);
         }
     }
 }

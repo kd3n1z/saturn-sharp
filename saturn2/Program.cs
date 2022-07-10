@@ -16,6 +16,7 @@ namespace saturn2
         public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "saturn");
         public static List<string> versions = new List<string>();
         public static List<string> javas = new List<string>();
+        public static string ngrokPath = Path.Combine(path, "ngrok", "ngrok.exe");
 
         [STAThread]
         static void Main()

@@ -55,6 +55,10 @@ namespace saturn2
 
             sf["java"] = javabin;
 
+            sf["ngrokToken"] = "YOUR_NGROK_TOKEN_HERE";
+            sf["ngrokEnabled"] = "false";
+            sf["ngrokArgs"] = "--log stdout --region eu --authtoken %token tcp %port";
+
             File.WriteAllText(Path.Combine(serverDir, "saturn-config.txt"), sf.ToString());
 
             if (!File.Exists(Path.Combine(Program.path, "server-jars", jarVer.Text + ".jar")))
