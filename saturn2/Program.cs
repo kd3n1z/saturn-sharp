@@ -7,7 +7,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace saturn2
+namespace saturn
 {
     internal static class Program
     {

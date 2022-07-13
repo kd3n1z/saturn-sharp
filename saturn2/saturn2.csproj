@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{87FEE881-8DF3-41CF-AC0D-03953ABA23E8}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>saturn2</RootNamespace>
-    <AssemblyName>saturn2</AssemblyName>
+    <RootNamespace>saturn</RootNamespace>
+    <AssemblyName>saturn</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -91,6 +91,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="ServerSetup.resx">
       <DependentUpon>ServerSetup.cs</DependentUpon>

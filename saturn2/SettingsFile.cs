@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace saturn2
+namespace saturn
 {
     public class SettingsFile
     {

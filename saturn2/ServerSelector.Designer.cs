@@ -1,4 +1,4 @@
-﻿namespace saturn2
+﻿namespace saturn
 {
     partial class ServerSelector
     {

@@ -12,7 +12,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace saturn2
+namespace saturn
 {
     public partial class ServerSetup : Form
     {

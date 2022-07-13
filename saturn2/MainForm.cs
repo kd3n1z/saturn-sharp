@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace saturn2
+namespace saturn
 {
     public partial class MainForm : Form
     {
@@ -283,12 +283,16 @@ namespace saturn2
         {
             if(e.KeyCode == Keys.Enter)
             {
+                richTextBox1.AppendText("> " + textBox1.Text + "\n");
                 try
                 {
                     javaProcess.StandardInput.WriteLine(textBox1.Text);
-                    textBox1.Text = "";
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    richTextBox1.AppendText("Exception: " + ex.Message + "\n");
+                }
+                textBox1.Text = "";
             }
         }
 
