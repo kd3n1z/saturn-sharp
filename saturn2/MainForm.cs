@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Microsoft.VisualBasic.Devices;
 
 namespace saturn
 {
@@ -53,8 +50,14 @@ namespace saturn
             textBox3.Text = sf["ngrokToken"];
             textBox4.Text = sf["ngrokArgs"];
             checkBox1.Checked = sf["ngrokEnabled"] == "true";
-            trackBar1.Value = int.Parse(sf["mem"]);
+            trackBar1.Maximum = (int)(new ComputerInfo().TotalPhysicalMemory / 1024 / 1024);
 
+            if(trackBar1.Maximum < 1024)
+            {
+                trackBar1.Minimum = 0;
+            }
+
+            trackBar1.Value = int.Parse(sf["mem"]);
             trackBar1_Scroll(this, new EventArgs());
 
             try
