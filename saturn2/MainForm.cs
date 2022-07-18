@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Microsoft.VisualBasic.Devices;
@@ -11,6 +12,19 @@ namespace saturn
 {
     public partial class MainForm : Form
     {
+        #region external
+        [DllImport("Gdi32.dll", EntryPoint = "CreateRoundRectRgn")]
+        private static extern IntPtr CreateRoundRectRgn
+        (
+            int nLeftRect,
+            int nTopRect,
+            int nRightRect,
+            int nBottomRect,
+            int nWidthEllipse,
+            int nHeightEllipse
+        );
+        #endregion
+
         Process ngrokProcess = new Process();
         Process javaProcess = new Process();
 
@@ -27,6 +41,7 @@ namespace saturn
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Region = Region.FromHrgn(CreateRoundRectRgn(0, 0, Width, Height, 15, 15));
             serverPath = Path.Combine(Program.path, "servers", server);
             label1.Text = label1.Text.Replace("%server", server).Replace("%build", Program.build.ToString());
 

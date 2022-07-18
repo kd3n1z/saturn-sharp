@@ -15,7 +15,7 @@ namespace saturn
 {
     internal static class Program
     {
-        public static int build = 2;
+        public static int build = 3;
 
         public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "saturn");
         public static List<string> versions = new List<string>();
