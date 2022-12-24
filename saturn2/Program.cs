@@ -73,28 +73,32 @@ namespace saturn
                 MessageBox.Show("unable to fetch versions from https://mcversions.net/", "saturn", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
 
-            foreach(string java in Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Java")).Concat(Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles).Replace(" (x86)", ""), "Java"))))
+            try
             {
-                string javabin = Path.Combine(java, "bin", "java.exe");
-                if (File.Exists(javabin))
+                foreach (string java in Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Java")).Concat(Directory.GetDirectories(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles).Replace(" (x86)", ""), "Java"))))
                 {
-                    string ver = "unknown";
-                    try
+                    string javabin = Path.Combine(java, "bin", "java.exe");
+                    if (File.Exists(javabin))
                     {
-                        Process p = new Process();
-                        p.StartInfo.FileName = javabin;
-                        p.StartInfo.Arguments = "-version";
-                        p.StartInfo.RedirectStandardError = true;
-                        p.StartInfo.CreateNoWindow = true;
-                        p.StartInfo.UseShellExecute = false;
-                        p.Start();
-                        p.WaitForExit();
-                        ver = "Java v" + p.StandardError.ReadLine().Split('"')[1];
+                        string ver = "unknown";
+                        try
+                        {
+                            Process p = new Process();
+                            p.StartInfo.FileName = javabin;
+                            p.StartInfo.Arguments = "-version";
+                            p.StartInfo.RedirectStandardError = true;
+                            p.StartInfo.CreateNoWindow = true;
+                            p.StartInfo.UseShellExecute = false;
+                            p.Start();
+                            p.WaitForExit();
+                            ver = "Java v" + p.StandardError.ReadLine().Split('"')[1];
+                        }
+                        catch { }
+                        javas.Add(ver + " (" + javabin + ")");
                     }
-                    catch { }
-                    javas.Add(ver + " (" + javabin + ")");
                 }
             }
+            catch { }
 
             ServerSelector selector = new ServerSelector();
             while (selector.ShowDialog() == DialogResult.OK)
