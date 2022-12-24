@@ -6,7 +6,6 @@ using System.Linq;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using System.Xml.XPath;
@@ -15,7 +14,7 @@ namespace saturn
 {
     internal static class Program
     {
-        public static int build = 3;
+        public static int build = 4;
 
         public static string path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "saturn");
         public static List<string> versions = new List<string>();
