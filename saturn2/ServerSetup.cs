@@ -35,7 +35,15 @@ namespace saturn
                 javaPath.Items.Add(path);
             }
             jarVer.Text = jarVer.Items[0].ToString();
-            javaPath.Text = javaPath.Items[0].ToString();
+            try
+            {
+                javaPath.Text = javaPath.Items[0].ToString();
+            }
+            catch
+            {
+                javaPath.Items.Add("java.exe");
+                javaPath.Text = "java.exe";
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)
