@@ -29,6 +29,8 @@ namespace saturn
         [STAThread]
         static void Main()
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -107,6 +109,11 @@ namespace saturn
                 mf.server = selector.server;
                 mf.ShowDialog();
             }
+        }
+
+        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show(e.ExceptionObject.ToString(), "saturn", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         public static void CheckForUpdates()
